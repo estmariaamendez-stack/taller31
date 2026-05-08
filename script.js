@@ -392,6 +392,18 @@ function cohenSutherland(x1, y1, x2, y2){
 
 function actualizarViewport(){
 
+ctx.fillStyle = "blue";
+
+ctx.font = "16px Arial";
+
+ctx.fillText("TOP", xmin + 150, convertirY(ymax) - 10);
+
+ctx.fillText("BOTTOM", xmin + 120, convertirY(ymin) + 20);
+
+ctx.fillText("LEFT", xmin - 50, convertirY(ymin + 150));
+
+ctx.fillText("RIGHT", xmax + 10, convertirY(ymin + 150));
+
     xmin = parseInt(
         document.getElementById("xminInput").value
     );
