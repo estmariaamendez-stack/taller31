@@ -1,63 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Cohen-Sutherland
+    </title>
+
+    <style>
+
+        body{
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: linear-gradient(
+                to right,
+                #dbeafe,
+                #f3f4f6
+            );
+
+            display: flex;
+
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+        .contenedor{
+
+            background-color: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+
+            text-align: center;
+
+            width: fit-content;
+        }
+
+        h1{
+
+            color: #111827;
+
+            margin-bottom: 10px;
+        }
+
+        h2{
+
+            color: #374151;
+
+            margin-top: 0;
+        }
+
+        .info{
+
+            margin-bottom: 20px;
+        }
+
+        label{
+
+            font-weight: bold;
+        }
+
+        input{
+
+            width: 80px;
+
+            padding: 5px;
+
+            margin-right: 10px;
+
+            border-radius: 5px;
+
+            border: 1px solid gray;
+        }
+
+        button{
+
+            padding: 10px 15px;
+
+            margin: 10px 5px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background-color: #2563eb;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        button:hover{
+
+            background-color: #1d4ed8;
+        }
+
+        canvas{
+
+            border: 2px solid #d1d5db;
+
+            border-radius: 10px;
+
+            background-color: #f9fafb;
+        }
+
+        .leyenda{
+
+            margin-top: 15px;
+
+            text-align: left;
+
+            display: inline-block;
+
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
 <body>
 
-    <h1>Algoritmo Cohen-Sutherland</h1>
+    <div class="contenedor">
 
-    <div class="info">
+        <h1>
+            Algoritmo Cohen-Sutherland
+        </h1>
 
-        <h2 id="tituloCaso"></h2>
+        <h2 id="tituloCaso">
+            Caso
+        </h2>
 
-        <p id="descripcionCaso"></p>
+        <p id="descripcionCaso">
+            Visualización del algoritmo.
+        </p>
 
-    </div>
+        <!-- VIEWPORT -->
 
-<label>Xmin:</label>
-<input type="number" id="xminInput" value="200">
+        <div class="info">
 
-<label>Ymin:</label>
-<input type="number" id="yminInput" value="150">
+            <label>Xmin:</label>
 
-<label>Xmax:</label>
-<input type="number" id="xmaxInput" value="600">
+            <input
+                type="number"
+                id="xminInput"
+                value="200">
 
-<label>Ymax:</label>
-<input type="number" id="ymaxInput" value="450">
+            <label>Ymin:</label>
 
-<button onclick="actualizarViewport()">
-Actualizar Viewport
-</button>
+            <input
+                type="number"
+                id="yminInput"
+                value="150">
 
-    <canvas id="canvas" width="900" height="650"></canvas>
+            <label>Xmax:</label>
 
-    <div class="controls">
+            <input
+                type="number"
+                id="xmaxInput"
+                value="600">
 
-        <button onclick="anterior()">
-            ⬅ Anterior
-        </button>
+            <label>Ymax:</label>
 
-        <button onclick="siguiente()">
-            Siguiente ➡
-        </button>
+            <input
+                type="number"
+                id="ymaxInput"
+                value="450">
 
-    </div>
+            <button onclick="actualizarViewport()">
+                Actualizar Viewport
+            </button>
 
-    <div class="leyenda">
+        </div>
 
-        <div class="item">
+        <!-- CANVAS -->
 
-          <div style="color:gray;">
-■ Línea Original
-</div>
+        <canvas
+            id="canvas"
+            width="800"
+            height="600">
+        </canvas>
 
-<div style="color:red;">
-■ Línea Recortada
-</div>
+        <!-- BOTONES -->
 
-<div style="color:blue;">
-■ Viewport
-</div>
+        <div>
+
+            <button onclick="anterior()">
+                ⬅ Anterior
+            </button>
+
+            <button onclick="siguiente()">
+                Siguiente ➡
+            </button>
+
+        </div>
+
+        <!-- LEYENDA -->
+
+        <div class="leyenda">
+
+            <div style="color:gray;">
+                ■ Línea Original
+            </div>
+
+            <div style="color:red;">
+                ■ Línea Recortada
+            </div>
+
+            <div style="color:blue;">
+                ■ Viewport
+            </div>
+
+        </div>
 
     </div>
 
     <script src="script.js"></script>
 
 </body>
+
+</html>

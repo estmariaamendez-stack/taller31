@@ -110,8 +110,8 @@ function plotPixel(x, y, color){
     ctx.fillRect(
         Math.round(x),
         Math.round(convertirY(y)),
-        2,
-        2
+        4,
+        4
     );
 }
 
@@ -229,6 +229,17 @@ function dibujarViewport(){
     dibujarLinea(xmax, ymax, xmin, ymax, "blue");
 
     dibujarLinea(xmin, ymax, xmin, ymin, "blue");
+    ctx.fillStyle = "blue";
+
+ctx.font = "16px Arial";
+
+ctx.fillText("TOP", xmin + 150, convertirY(ymax) - 10);
+
+ctx.fillText("BOTTOM", xmin + 120, convertirY(ymin) + 20);
+
+ctx.fillText("LEFT", xmin - 50, convertirY(ymin + 150));
+
+ctx.fillText("RIGHT", xmax + 10, convertirY(ymin + 150));
 }
 
 // =====================================================
