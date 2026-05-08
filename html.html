@@ -10,6 +10,22 @@
 
     </div>
 
+<label>Xmin:</label>
+<input type="number" id="xminInput" value="200">
+
+<label>Ymin:</label>
+<input type="number" id="yminInput" value="150">
+
+<label>Xmax:</label>
+<input type="number" id="xmaxInput" value="600">
+
+<label>Ymax:</label>
+<input type="number" id="ymaxInput" value="450">
+
+<button onclick="actualizarViewport()">
+Actualizar Viewport
+</button>
+
     <canvas id="canvas" width="900" height="650"></canvas>
 
     <div class="controls">
@@ -28,24 +44,17 @@
 
         <div class="item">
 
-            <div class="color gris"></div>
+            <div style="color:gray;">
+■ Línea Original
+</div>
 
-            Línea Original
-        </div>
+<div style="color:red;">
+■ Línea Recortada
+</div>
 
-        <div class="item">
-
-            <div class="color rojo"></div>
-
-            Línea Recortada
-        </div>
-
-        <div class="item">
-
-            <div class="color azul"></div>
-
-            Viewport
-        </div>
+<div style="color:blue;">
+■ Viewport
+</div>
 
     </div>
 

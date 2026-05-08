@@ -1,5 +1,4 @@
 const canvas = document.getElementById("canvas");
-
 const ctx = canvas.getContext("2d");
 
 const WIDTH = canvas.width;
@@ -80,7 +79,7 @@ const escenas = [
 let escenaActual = 0;
 
 // =====================================================
-// CODIGOS
+// CODIGOS DE REGION
 // =====================================================
 
 const INSIDE = 0;
@@ -101,12 +100,30 @@ function convertirY(y){
 }
 
 // =====================================================
+// PLOT PIXEL
+// =====================================================
+
+function plotPixel(x, y, color){
+
+    ctx.fillStyle = color;
+
+    ctx.fillRect(
+        Math.round(x),
+        Math.round(convertirY(y)),
+        2,
+        2
+    );
+}
+
+// =====================================================
 // GRID
 // =====================================================
 
 function dibujarGrid(){
 
     ctx.strokeStyle = "#d1d5db";
+
+    ctx.lineWidth = 1;
 
     for(let x = 0; x <= WIDTH; x += 50){
 
@@ -132,23 +149,52 @@ function dibujarGrid(){
 }
 
 // =====================================================
-// LINEA PERSONALIZADA
+// BRESENHAM
 // =====================================================
 
 function dibujarLinea(x1, y1, x2, y2, color){
 
-    ctx.strokeStyle = color;
+    x1 = Math.round(x1);
+    y1 = Math.round(y1);
 
-    ctx.lineWidth = 4;
+    x2 = Math.round(x2);
+    y2 = Math.round(y2);
 
-    ctx.beginPath();
+    let dx = Math.abs(x2 - x1);
+    let dy = Math.abs(y2 - y1);
 
-    ctx.moveTo(x1, convertirY(y1));
+    let sx = (x1 < x2) ? 1 : -1;
+    let sy = (y1 < y2) ? 1 : -1;
 
-    ctx.lineTo(x2, convertirY(y2));
+    let err = dx - dy;
 
-    ctx.stroke();
+    while(true){
+
+        plotPixel(x1, y1, color);
+
+        if(x1 === x2 && y1 === y2){
+
+            break;
+        }
+
+        let e2 = 2 * err;
+
+        if(e2 > -dy){
+
+            err -= dy;
+
+            x1 += sx;
+        }
+
+        if(e2 < dx){
+
+            err += dx;
+
+            y1 += sy;
+        }
+    }
 }
+
 // =====================================================
 // DIBUJAR PUNTO
 // =====================================================
@@ -169,22 +215,20 @@ function dibujarPunto(x, y, color){
 
     ctx.fill();
 }
+
 // =====================================================
 // VIEWPORT
 // =====================================================
 
 function dibujarViewport(){
 
-    ctx.strokeStyle = "blue";
+    dibujarLinea(xmin, ymin, xmax, ymin, "blue");
 
-    ctx.lineWidth = 4;
+    dibujarLinea(xmax, ymin, xmax, ymax, "blue");
 
-    ctx.strokeRect(
-        xmin,
-        convertirY(ymax),
-        xmax - xmin,
-        ymax - ymin
-    );
+    dibujarLinea(xmax, ymax, xmin, ymax, "blue");
+
+    dibujarLinea(xmin, ymax, xmin, ymin, "blue");
 }
 
 // =====================================================
@@ -340,6 +384,31 @@ function cohenSutherland(x1, y1, x2, y2){
     }
 
     return null;
+}
+
+// =====================================================
+// ACTUALIZAR VIEWPORT
+// =====================================================
+
+function actualizarViewport(){
+
+    xmin = parseInt(
+        document.getElementById("xminInput").value
+    );
+
+    ymin = parseInt(
+        document.getElementById("yminInput").value
+    );
+
+    xmax = parseInt(
+        document.getElementById("xmaxInput").value
+    );
+
+    ymax = parseInt(
+        document.getElementById("ymaxInput").value
+    );
+
+    dibujar();
 }
 
 // =====================================================
