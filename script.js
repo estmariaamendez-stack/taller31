@@ -6,7 +6,7 @@ const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
 // =====================================================
-// VENTANA DE RECORTE
+// VIEWPORT
 // =====================================================
 
 let xmin = 200;
@@ -16,7 +16,71 @@ let xmax = 600;
 let ymax = 450;
 
 // =====================================================
-// CODIGOS BINARIOS
+// ESCENAS
+// =====================================================
+
+const escenas = [
+
+    // 1. totalmente dentro
+    {
+        nombre: "Totalmente dentro",
+
+        x1: 300,
+        y1: 250,
+
+        x2: 500,
+        y2: 400
+    },
+
+    // 2. totalmente fuera
+    {
+        nombre: "Totalmente fuera",
+
+        x1: 50,
+        y1: 520,
+
+        x2: 120,
+        y2: 580
+    },
+
+    // 3. entrada parcial izquierda
+    {
+        nombre: "Entrada por izquierda",
+
+        x1: 50,
+        y1: 300,
+
+        x2: 450,
+        y2: 300
+    },
+
+    // 4. cruce exacto por esquina
+    {
+        nombre: "Cruce por esquina",
+
+        x1: 50,
+        y1: 550,
+
+        x2: 400,
+        y2: 300
+    },
+
+    // 5. cruce completo
+    {
+        nombre: "Cruce total",
+
+        x1: 50,
+        y1: 100,
+
+        x2: 750,
+        y2: 520
+    }
+];
+
+let escenaActual = 0;
+
+// =====================================================
+// CODIGOS
 // =====================================================
 
 const INSIDE = 0;
@@ -28,7 +92,7 @@ const BOTTOM = 4;
 const TOP = 8;
 
 // =====================================================
-// CONVERTIR EJE Y
+// CONVERTIR Y
 // =====================================================
 
 function convertirY(y){
@@ -68,7 +132,7 @@ function dibujarGrid(){
 }
 
 // =====================================================
-// FUNCION PERSONALIZADA LINEA
+// LINEA PERSONALIZADA
 // =====================================================
 
 function dibujarLinea(x1, y1, x2, y2, color){
@@ -105,32 +169,28 @@ function dibujarViewport(){
 }
 
 // =====================================================
-// OBTENER CODIGO
+// CODIGO DE REGION
 // =====================================================
 
 function obtenerCodigo(x, y){
 
     let codigo = INSIDE;
 
-    // izquierda
     if(x < xmin){
 
         codigo |= LEFT;
     }
 
-    // derecha
     else if(x > xmax){
 
         codigo |= RIGHT;
     }
 
-    // abajo
     if(y < ymin){
 
         codigo |= BOTTOM;
     }
 
-    // arriba
     else if(y > ymax){
 
         codigo |= TOP;
@@ -140,7 +200,7 @@ function obtenerCodigo(x, y){
 }
 
 // =====================================================
-// ALGORITMO COHEN-SUTHERLAND
+// COHEN SUTHERLAND
 // =====================================================
 
 function cohenSutherland(x1, y1, x2, y2){
@@ -169,7 +229,7 @@ function cohenSutherland(x1, y1, x2, y2){
             break;
         }
 
-        // parcialmente dentro
+        // parcialmente visible
 
         else{
 
@@ -191,7 +251,8 @@ function cohenSutherland(x1, y1, x2, y2){
 
             if(codigoFuera & TOP){
 
-                x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1);
+                x = x1 + (x2 - x1) *
+                (ymax - y1) / (y2 - y1);
 
                 y = ymax;
             }
@@ -200,7 +261,8 @@ function cohenSutherland(x1, y1, x2, y2){
 
             else if(codigoFuera & BOTTOM){
 
-                x = x1 + (x2 - x1) * (ymin - y1) / (y2 - y1);
+                x = x1 + (x2 - x1) *
+                (ymin - y1) / (y2 - y1);
 
                 y = ymin;
             }
@@ -209,7 +271,8 @@ function cohenSutherland(x1, y1, x2, y2){
 
             else if(codigoFuera & RIGHT){
 
-                y = y1 + (y2 - y1) * (xmax - x1) / (x2 - x1);
+                y = y1 + (y2 - y1) *
+                (xmax - x1) / (x2 - x1);
 
                 x = xmax;
             }
@@ -218,7 +281,8 @@ function cohenSutherland(x1, y1, x2, y2){
 
             else if(codigoFuera & LEFT){
 
-                y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1);
+                y = y1 + (y2 - y1) *
+                (xmin - x1) / (x2 - x1);
 
                 x = xmin;
             }
@@ -244,8 +308,6 @@ function cohenSutherland(x1, y1, x2, y2){
             }
         }
     }
-
-    // retornar linea recortada
 
     if(aceptar){
 
@@ -273,29 +335,37 @@ function dibujar(){
 
     dibujarViewport();
 
+    let linea = escenas[escenaActual];
+
+    // titulo
+
+    ctx.fillStyle = "black";
+
+    ctx.font = "22px Arial";
+
+    ctx.fillText(
+        "Caso: " + linea.nombre,
+        20,
+        30
+    );
+
     // linea original
 
-    let x1 = 100;
-    let y1 = 100;
-
-    let x2 = 700;
-    let y2 = 500;
-
     dibujarLinea(
-        x1,
-        y1,
-        x2,
-        y2,
+        linea.x1,
+        linea.y1,
+        linea.x2,
+        linea.y2,
         "gray"
     );
 
     // linea recortada
 
     let resultado = cohenSutherland(
-        x1,
-        y1,
-        x2,
-        y2
+        linea.x1,
+        linea.y1,
+        linea.x2,
+        linea.y2
     );
 
     if(resultado){
@@ -309,5 +379,41 @@ function dibujar(){
         );
     }
 }
+
+// =====================================================
+// SIGUIENTE
+// =====================================================
+
+function siguiente(){
+
+    escenaActual++;
+
+    if(escenaActual >= escenas.length){
+
+        escenaActual = 0;
+    }
+
+    dibujar();
+}
+
+// =====================================================
+// ANTERIOR
+// =====================================================
+
+function anterior(){
+
+    escenaActual--;
+
+    if(escenaActual < 0){
+
+        escenaActual = escenas.length - 1;
+    }
+
+    dibujar();
+}
+
+// =====================================================
+// INICIO
+// =====================================================
 
 dibujar();
