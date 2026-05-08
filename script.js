@@ -149,7 +149,26 @@ function dibujarLinea(x1, y1, x2, y2, color){
 
     ctx.stroke();
 }
+// =====================================================
+// DIBUJAR PUNTO
+// =====================================================
 
+function dibujarPunto(x, y, color){
+
+    ctx.fillStyle = color;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        convertirY(y),
+        6,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+}
 // =====================================================
 // VIEWPORT
 // =====================================================
@@ -329,13 +348,21 @@ function cohenSutherland(x1, y1, x2, y2){
 
 function dibujar(){
 
+    let linea = escenas[escenaActual];
+
+    // actualizar informacion
+
+    document.getElementById("tituloCaso").innerText =
+    linea.nombre;
+
+    document.getElementById("descripcionCaso").innerText =
+    "Visualizacion del caso del algoritmo Cohen-Sutherland.";
+
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
     dibujarGrid();
 
     dibujarViewport();
-
-    let linea = escenas[escenaActual];
 
     // titulo
 
@@ -357,6 +384,38 @@ function dibujar(){
         linea.x2,
         linea.y2,
         "gray"
+    );
+
+    // puntos extremos
+
+    dibujarPunto(
+        linea.x1,
+        linea.y1,
+        "black"
+    );
+
+    dibujarPunto(
+        linea.x2,
+        linea.y2,
+        "black"
+    );
+
+    // coordenadas
+
+    ctx.fillStyle = "black";
+
+    ctx.font = "16px Arial";
+
+    ctx.fillText(
+        `(${linea.x1}, ${linea.y1})`,
+        linea.x1 + 10,
+        convertirY(linea.y1) - 10
+    );
+
+    ctx.fillText(
+        `(${linea.x2}, ${linea.y2})`,
+        linea.x2 + 10,
+        convertirY(linea.y2) - 10
     );
 
     // linea recortada

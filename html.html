@@ -2,7 +2,15 @@
 
     <h1>Algoritmo Cohen-Sutherland</h1>
 
-    <canvas id="canvas" width="800" height="600"></canvas>
+    <div class="info">
+
+        <h2 id="tituloCaso"></h2>
+
+        <p id="descripcionCaso"></p>
+
+    </div>
+
+    <canvas id="canvas" width="900" height="650"></canvas>
 
     <div class="controls">
 
@@ -13,6 +21,31 @@
         <button onclick="siguiente()">
             Siguiente ➡
         </button>
+
+    </div>
+
+    <div class="leyenda">
+
+        <div class="item">
+
+            <div class="color gris"></div>
+
+            Línea Original
+        </div>
+
+        <div class="item">
+
+            <div class="color rojo"></div>
+
+            Línea Recortada
+        </div>
+
+        <div class="item">
+
+            <div class="color azul"></div>
+
+            Viewport
+        </div>
 
     </div>
 
